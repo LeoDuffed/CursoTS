@@ -2,45 +2,41 @@ import {Router} from 'express'
 import { body, param } from 'express-validator'
 import { BudgetController } from '../controllers/BudgetController'
 import { handleInputError } from '../middleware/validation'
-import { validateBudgetExists, validateBudgetId } from '../middleware/budget'
+import { validateBudgetExists, validateBudgetId, validateBudgetInput } from '../middleware/budget'
 
-const router = Router()
+const router = Router() 
+
+// asi se puede avitar poner en cada ruta que ocupe el id como parametro
+//router.param('budgetId', validateBudgetId)
+//router.param('budgetId', validateBudgetExists)
 
 router.get('/', 
     BudgetController.getAll
 ) 
 
 router.post('/',
-    body('name')
-        .notEmpty().withMessage('El nombre del prosupuesto no puede ir vacio'),
-    body('amount')
-        .notEmpty().withMessage('La cantidad del prosupuesto no puede ir vacia')
-        .isNumeric().withMessage('Cantidad no válida')
-        .custom(value => value > 0).withMessage('El presupuesto no es valido'),
+    validateBudgetInput,
     handleInputError,
     BudgetController.create
 ) 
   
-router.get('/:id', 
+router.get('/:budgetId', 
     validateBudgetId,
     validateBudgetExists,
     BudgetController.getById
 )
 
-router.put('/:id', 
+router.put('/:budgetId', 
     validateBudgetId,
-    body('name')
-        .notEmpty().withMessage('El nombre del prosupuesto no puede ir vacio'),
-    body('amount')
-        .notEmpty().withMessage('La cantidad del prosupuesto no puede ir vacia')
-        .isNumeric().withMessage('Cantidad no válida')
-        .custom(value => value > 0).withMessage('El presupuesto no es valido'),
+    validateBudgetExists,
+    validateBudgetInput,
     handleInputError,
     BudgetController.updateById
 ) 
 
-router.delete('/:id', 
+router.delete('/:budgetId', 
     validateBudgetId,
+    validateBudgetExists,
     BudgetController.deleteById
 ) 
 
