@@ -11,7 +11,7 @@ declare global {
 }
 
 export const validateBudgetId = async (req: Request, res: Response, next: NextFunction) => {
-    await  param('budgetId')
+    await param('budgetId')
         .isInt().withMessage('Id no valido')
         .custom(value => value > 0).withMessage('El id no es valido')
         .run(req)
@@ -46,6 +46,7 @@ export const validateBudgetExists = async (req: Request, res: Response, next: Ne
 export const validateBudgetInput = async (req: Request, res: Response, next: NextFunction) => {
     await body('name')
         .notEmpty().withMessage('El nombre del prosupuesto no puede ir vacio').run(req)
+        
    await body('amount')
         .notEmpty().withMessage('La cantidad del prosupuesto no puede ir vacia')
         .isNumeric().withMessage('Cantidad no válida')
