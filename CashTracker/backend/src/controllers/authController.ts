@@ -1,6 +1,7 @@
 import type { Request, Response } from "express"
 import User from "../models/User"
 import { checkPassword, hashPassword } from "../helpers/auth"
+import { generateJWT } from "../helpers/jwt"
 import { generateToken } from "../helpers/token"
 import { AuthEmail } from "../emails/AuthEmail"
 
@@ -81,7 +82,7 @@ export class AuthController {
             return res.status(401).json({error: error.message})
         }
 
-        res.json(isPasswordCorrect)
-
+        const token = generateJWT(user.id )
+        res.json(token)
     }
 }

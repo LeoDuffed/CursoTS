@@ -1,0 +1,12 @@
+import type { Request, Response } from 'express';
+export declare class BudgetController {
+    static getAll: (req: Request, res: Response) => Promise<void>;
+    static create: (req: Request, res: Response) => Promise<void>;
+    static getById: (req: Request, res: Response) => Promise<void>;
+    static updateById: (req: Request<{
+        id: string;
+    }>, res: Response) => Promise<void>;
+    static deleteById: (req: Request<{
+        id: string;
+    }>, res: Response) => Promise<void>;
+}
